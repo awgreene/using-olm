@@ -1,28 +1,26 @@
-# Run OLM in Minishift
+# Run OLM in OpenShift/Minishift
 ## Prereq
-Make sure to copy this file to the operator-lifecycle-manager repo.
-## Create a sandbox to host olms
+1. Be a cluster admin
+2. Have an OpenShift/MiniShift cluster running
+3. Have git installed
+## OPTIONAL: Use Operator Lifecycle Manager (OLM) toolkit to generate olm templates
+```bash
+git clone https://github.com/operator-framework/operator-lifecycle-manager
+cd operator-lifecycle-manager
+./scripts/package-release.sh 1.0.0-localolm ../self-generated-olm-templates ../olm-configuration.yaml
+cd ../
 ```
-$ oc new-project olm-sandbox
+
+## Create a sandbox and deploy olm operators
+```bash
+oc new-project olm-sandbox
+oc apply -f olm-templates 
 ```
-## Build deployment resources for an olm cluster
-```
-$ ./scripts/package-release.sh 1.0.0-localolm ./local-olm setup-olm/olm-configuration.yaml
-```
-## Create OLM operators
-```
-$ oc apply -f local-olm/templates 
-```
-## Create a sandbox for JBoss operator
-```
-$ oc new-project sandbox
-```
-## Define CustomResourceDefinition for JBoss
-```
-$ oc create -f setup-olm/jboss-operator/jboss-crd.yaml
-```
-## Deploy JBoss operator in the Sandbox
-```
-$ oc create -f setup-olm/jboss-operator/deploy-jboss-operator.yaml
+
+## Create a sandbox, define the JBoss CRD, and deploy JBoss operator
+```bash
+oc new-project sandbox
+oc create -f setup-olm/jboss-operator/jboss-crd.yaml
+oc create -f setup-olm/jboss-operator/deploy-jboss-operator.yaml
 ```
 
