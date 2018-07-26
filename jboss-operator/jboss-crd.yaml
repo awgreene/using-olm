@@ -1,0 +1,17 @@
+# This file defines the CustomResourceDefinition (CRD) for representing an instance of your
+# application. By default, we've defined our instances to be named `example-app`, so that
+# they will appear in kubectl via `kubectl get example-apps`. The defined names of the application
+# instance type can be changed below.
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: jboss-apps.jboss.redhat.com
+spec:
+  group: jboss.redhat.com
+  scope: Namespaced
+  version: v1
+  names: 
+    singular: jboss-app
+    plural: jboss-apps
+    kind: JBossApp
+    listKind: JBossAppList

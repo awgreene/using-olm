@@ -1,0 +1,113 @@
+# This file defines the ClusterServiceVersion (CSV) to tell the catalog how to display, create and
+# manage the application as a whole. If changes are made to the CRD for this application kind,
+# make sure to replace those references below as well.
+apiVersion: app.coreos.com/v1alpha1
+kind: ClusterServiceVersion-v1
+metadata:
+  name: jboss-app-operator.v0.0.1
+  namespace: sandbox
+spec:
+  install: 
+    strategy: deployment
+    spec:
+      permissions:
+      - serviceAccountName: jboss-app-operator
+        rules:
+        - apiGroups:
+          - jboss.redhat.com
+          resources:
+          - jboss-apps
+          - jboss-apps/finalizers
+          verbs:
+          - "*"
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - events
+          - namespaces
+          verbs:
+          - "*"
+        - apiGroups:
+          - ""
+          resources:
+          - "namespaces"
+          verbs:
+          - "get"
+        - apiGroups:
+          - apps
+          - extensions
+          resources:
+          - deployments
+          verbs:
+          - "*"
+      deployments: 
+      - name: jboss-app-operator
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              app: jboss-app-operator
+          template:
+            metadata:
+              labels:
+                app: jboss-app-operator
+            spec:
+              containers:
+                - name: sao
+                  image: docker.io/tohinkashem/jboss-operator
+                  ports:
+                    - containerPort: 8080
+                      protocol: TCP
+                  imagePullPolicy: Always
+              restartPolicy: Always
+              terminationGracePeriodSeconds: 5
+              serviceAccountName: jboss-app-operator
+              serviceAccount: jboss-app-operator
+  customresourcedefinitions:
+    owned:
+      - description: Represents a cluster of jboss/tomcat apps
+        displayName: JBoss/Tomcat App
+        kind: JBossApp
+        name: jboss-apps.jboss.redhat.com
+        version: v1
+        resources:
+          - kind: Deployment
+            version: v1beta2
+          - kind: ReplicaSet
+            version: v1beta2
+          - kind: Pod
+            version: v1
+        specDescriptors:
+          - description: The desired number of member Pods for the deployment.
+            displayName: Size
+            path: size
+            x-descriptors:
+              - 'urn:alm:descriptor:com.tectonic.ui:podCount'
+        statusDescriptors:
+          - description: The current status of the application.
+            displayName: Status
+            path: phase
+            x-descriptors:
+              - 'urn:alm:descriptor:io.kubernetes.phase'
+          - description: Explanation for the current status of the application.
+            displayName: Status Details
+            path: reason
+            x-descriptors:
+              - 'urn:alm:descriptor:io.kubernetes.phase:reason'
+  keywords:
+    - jboss
+    - app
+  displayName: JBoss Web Server
+  provider:
+    name: Red Hat
+    url: www.redhat.com
+  maturity: alpha
+  version: 0.0.1
+  maintainers:
+    - email: corp@redhat.com
+      name: Red Hat
+  description: Platform for building and running web applications on JBoss Web Server 3.1 - Tomcat v8.
+  labels:
+    alm-owner-enterprise-app: jboss-app-operator
+    alm-status-descriptors: jboss-app-operator.v0.0.1

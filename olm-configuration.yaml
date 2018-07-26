@@ -1,0 +1,22 @@
+rbacApiVersion: authorization.openshift.io
+namespace: olm-sandbox
+catalog_namespace: olm-sandbox
+alm:
+  replicaCount: 1
+  image:
+    ref: docker.io/tohinkashem/olm:local
+    pullPolicy: IfNotPresent
+  service:
+    internalPort: 8080
+
+catalog:
+  replicaCount: 1
+  image:
+    ref: docker.io/tohinkashem/catalog:local
+    pullPolicy: IfNotPresent
+  service:
+    internalPort: 8080
+
+catalog_sources:
+ - tectonic-ocs
+ - tectonic-components
