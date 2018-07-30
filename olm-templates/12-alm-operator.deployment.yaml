@@ -25,7 +25,7 @@ spec:
         - name: alm-operator
           command:
           - /bin/alm
-          image: docker.io/tohinkashem/olm:local
+          image: quay.io/coreos/olm:0.5.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

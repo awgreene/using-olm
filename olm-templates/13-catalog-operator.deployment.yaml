@@ -28,7 +28,7 @@ spec:
           - '-namespace'
           - olm-sandbox
           - '-debug'
-          image: docker.io/tohinkashem/catalog:local
+          image: quay.io/coreos/catalog:0.5.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

@@ -4,7 +4,7 @@ catalog_namespace: olm-sandbox
 alm:
   replicaCount: 1
   image:
-    ref: docker.io/tohinkashem/olm:local
+    ref: quay.io/coreos/olm:0.5.0
     pullPolicy: IfNotPresent
   service:
     internalPort: 8080
@@ -12,7 +12,7 @@ alm:
 catalog:
   replicaCount: 1
   image:
-    ref: docker.io/tohinkashem/catalog:local
+    ref: quay.io/coreos/catalog:0.5.0
     pullPolicy: IfNotPresent
   service:
     internalPort: 8080
