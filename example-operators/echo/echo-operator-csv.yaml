@@ -5,7 +5,6 @@ apiVersion: app.coreos.com/v1alpha1
 kind: ClusterServiceVersion-v1
 metadata:
   name: echo-operator.v0.0.2
-  namespace: sandbox
 spec:
   install:
     strategy: deployment
